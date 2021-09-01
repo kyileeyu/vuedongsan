@@ -1,14 +1,6 @@
 <template>
 
-  <div class="black-bg" v-if="modalOpen == true">
-    <div class="white-bg">
-      <h4> {{oneroom[click].title}}</h4>
-      <img :src="oneroom[click].image" class="room">
-      <p> {{oneroom[click].content}}</p>
-        <p>{{oneroom[click].price}}원 </p>
-      <button @click="modalOpen =false">닫기</button>
-    </div>
-  </div>
+  <Modal @closeModal="modalOpen = false" :oneroom="oneroom" :modalOpen="modalOpen" :click="click"/>
 
 
   <div class="menu">
@@ -17,14 +9,10 @@
 
   <Discount/>
 
-  <img alt="Vue logo" src="./assets/logo.png">
+  <img alt="Vue logo" src="./assets/logo.png">  
 
-  <div v-for="(a,i) in oneroom" :key="i">
-    <img :src="a.image" class="room-img">
-    <h4 @click="modalOpen = true; click = i">{{a.title}}</h4>
-    <p>{{a.price}}원 </p>
-  </div>
-
+  <Card @openModal="modalOpen = true; click= $event" :room="oneroom[i]"  v-for="(작명,i) in oneroom" :key="작명"/>
+   
 
 </template>
 
@@ -32,9 +20,8 @@
 
 import data from './assets/oneroom.js';
 import Discount from './Discount.vue';
-
-
-
+import Modal from './Modal.vue';
+import Card from './Cardlist.vue';
 
 
 
@@ -59,6 +46,8 @@ export default {
 
   components : {
     Discount : Discount,//보통은 이렇게 맞춰씀
+    Modal : Modal,
+    Card : Card,
   },
 }
 </script>
@@ -73,28 +62,8 @@ div {
   box-sizing: border-box;
 }
 
-.black-bg {
-  width : 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  position: fixed;
-  padding : 20px;
-}
 
-.white-bg {
-  width : 100%;
-  background: #fff;
-  border-radius: 8px;
-  padding : 20px;
-}
-.room-img{
-  width : 100%;
-  margin-top : 40px;
-}
 
-.room{
-  width: 50%;
-}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
