@@ -1,14 +1,20 @@
 <template>
 
-  <Modal @closeModal="modalOpen = false" :oneroom="oneroom" :modalOpen="modalOpen" :click="click"/>
-
+<transition name="fade">
+  <Modal @closeModal="modalOpen = false" 
+  :oneroom="oneroom" :modalOpen="modalOpen" 
+  :click="click"/>
+</transition>
 
   <div class="menu">
       <a v-for="i in menu" :key="i">{{ i }}</a>
   </div>
 
-  <Discount/>
+  <Discount v-if="showDiscount == true" :discountPersent="discountPersent"/>
 
+  <button @click="priceSort">가격순 정렬</button>
+  <button @click="priceSort">가나다순 정렬</button>
+  <button @click="sortBack">초기화</button>
   <img alt="Vue logo" src="./assets/logo.png">  
 
   <Card @openModal="modalOpen = true; click= $event" :room="oneroom[i]"  v-for="(작명,i) in oneroom" :key="작명"/>
@@ -31,6 +37,9 @@ export default {
   name: 'App',
   data(){//데이터 보관함 ==state라고 부름
     return {
+      discountPersent : 5,
+      showDiscount : true,
+      oneroomOriginal : [...data],
       click : 0,
       oneroom : data,
       modalOpen : false,
@@ -41,7 +50,23 @@ export default {
     }
   },
   methods : {
+    priceSort(){
+      this.oneroom.sort(function(a,b){
+        return a.price -b.price
+      })
+    },
+    sortBack(){
+      this.oneroom = [...this.oneroomOriginal];
+    }
+  },
 
+  mounted(){//app.vue가 mount 되고나서 코드 실행해 줌
+    setInterval(()=>{//this 쓸일 있을때는 화살표함수 쓰기
+      this.discountPersent--;
+    },1000);
+    setTimeout(() =>{
+      this.showDiscount = false;
+    },this.discountPersent*1000); 
   },
 
   components : {
@@ -53,6 +78,16 @@ export default {
 </script>
 
 <style>
+.fade-enter-from{
+  opacity: 0;
+}
+.fade-enter-active{
+  transition: all 1s;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+
 body{
   margin : 0;
 }

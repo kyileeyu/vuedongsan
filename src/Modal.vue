@@ -19,6 +19,17 @@ export default {
         month : 1, 
       }
     }, 
+    watch :{
+      month(a){
+        if(a >=13) alert('13이상 하지마셈');
+        //month 라는 데이터가 변할 때마다 여기있는 코드를 지나감
+        if(isNaN(a)){
+          alert('숫자만 입력하세요');
+          this.month=1;
+        }
+        if(a==2)alert('3달부터 신청하실 수 있습니다')
+      }
+    },
     props : {
         oneroom : Array,//자료형 대문자로
         modalOpen : Boolean,
@@ -28,6 +39,13 @@ export default {
 </script>
 
 <style >
+.start {
+  opacity: 0;
+  transition : all 1s;
+}
+.end{
+  opacity:1;
+}
 .black-bg {
   width : 100%;
   height: 100%;
